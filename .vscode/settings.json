@@ -1,4 +1,6 @@
 {
   "material-icon-theme.activeIconPack": "nest",
-  "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true
 }

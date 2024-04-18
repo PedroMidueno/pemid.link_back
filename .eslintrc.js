@@ -3,35 +3,33 @@ module.exports = {
   parserOptions: {
     project: 'tsconfig.json',
     tsconfigRootDir: __dirname,
-    sourceType: 'module',
+    sourceType: 'module'
   },
-  plugins: ['@typescript-eslint/eslint-plugin'],
-  extends: [
-    'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended',
-  ],
+  plugins: ['@typescript-eslint/eslint-plugin', '@stylistic/eslint-plugin'],
+  extends: ['plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'],
   root: true,
   env: {
     node: true,
-    jest: true,
+    jest: true
   },
   ignorePatterns: ['.eslintrc.js'],
   rules: {
-    'prettier/prettier': [
-      'error',
-      {
-        singleQuote: true,
-        trailingComma: 'none',
-        semi: false,
-        tabWidth: 2,
-        printWidth: 120,
-        bracketSpacing: true,
-        endOfLine: 'auto'
-      }
-    ],
-    '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/no-explicit-any': 'off',
-  },
-};
+    '@typescript-eslint/no-explicit-any': 'warn',
+    'require-await': 'error',
+    '@stylistic/eol-last': ['warn', 'always'],
+    '@stylistic/no-multiple-empty-lines': 'error',
+    '@stylistic/no-trailing-spaces': 'error',
+    '@stylistic/quotes': ['error', 'single'],
+    '@stylistic/comma-dangle': ['error', 'never'],
+    '@stylistic/comma-spacing': ['error', { before: false, after: true }],
+    '@stylistic/semi': ['error', 'never'],
+    '@stylistic/arrow-spacing': 'error',
+    '@stylistic/function-call-spacing': ['error', 'never'],
+    '@stylistic/arrow-parens': ['error', 'as-needed'],
+    '@stylistic/array-bracket-spacing': ['error', 'never'],
+    '@stylistic/block-spacing': 'error',
+    '@stylistic/indent': ['error', 2]
+  }
+}
