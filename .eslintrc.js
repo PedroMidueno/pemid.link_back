@@ -30,6 +30,7 @@ module.exports = {
     '@stylistic/arrow-parens': ['error', 'as-needed'],
     '@stylistic/array-bracket-spacing': ['error', 'never'],
     '@stylistic/block-spacing': 'error',
-    '@stylistic/indent': ['error', 2]
+    '@stylistic/indent': ['error', 2],
+    '@stylistic/array-bracket-newline': ['error', 'consistent']
   }
 }
