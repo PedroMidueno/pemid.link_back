@@ -14,6 +14,7 @@ module.exports = {
   },
   ignorePatterns: ['.eslintrc.js'],
   rules: {
+    'prettier/prettier': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'warn',
@@ -31,6 +32,7 @@ module.exports = {
     '@stylistic/array-bracket-spacing': ['error', 'never'],
     '@stylistic/block-spacing': 'error',
     '@stylistic/indent': ['error', 2],
-    '@stylistic/array-bracket-newline': ['error', 'consistent']
+    '@stylistic/array-bracket-newline': ['error', 'consistent'],
+    '@stylistic/max-len': ['error', { code: 120 }]
   }
 }
