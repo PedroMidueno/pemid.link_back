@@ -28,6 +28,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (!user) {
       throw new UnauthorizedException()
     }
-    return payload
+
+    if (user.deleted) {
+      throw new UnauthorizedException('User has been deleted')
+    }
+
+    return user
   }
 }
