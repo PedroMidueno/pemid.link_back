@@ -33,7 +33,7 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials')
 
     return {
-      ...user,
+      email: user.email,
       token: this.getJwtToken({ id: user.id })
     }
   }
