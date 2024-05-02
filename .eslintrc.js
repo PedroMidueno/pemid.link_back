@@ -32,9 +32,10 @@ module.exports = {
     '@stylistic/arrow-parens': ['error', 'as-needed'],
     '@stylistic/array-bracket-spacing': ['error', 'never'],
     '@stylistic/block-spacing': 'error',
-    '@stylistic/object-curly-spacing': ['error', 'always'],
+    '@stylistic/object-curly-spacing': ['error', 'always', { arraysInObjects: true, objectsInObjects: true }],
     '@stylistic/indent': ['error', 2],
     '@stylistic/array-bracket-newline': ['error', 'consistent'],
-    '@stylistic/max-len': ['error', { code: 120 }]
+    '@stylistic/max-len': ['error', { code: 120 }],
+    '@stylistic/key-spacing': 'error'
   }
 }
