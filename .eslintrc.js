@@ -12,7 +12,7 @@ module.exports = {
     node: true,
     jest: true
   },
-  ignorePatterns: ['.eslintrc.js'],
+  ignorePatterns: ['.eslintrc.js', 'postgres'],
   rules: {
     'prettier/prettier': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
