@@ -6,6 +6,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt'
 
 import { PrismaService } from 'src/common/prisma.service'
 import { JwtPayload } from '../interfaces/JwtPayload.interface'
+import { User } from 'src/common/types'
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -23,7 +24,18 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: JwtPayload) {
     const { id } = payload
 
-    const user = await this.prisma.users.findFirst({ where: { id } })
+    const user: User = await this.prisma.users.findFirst(
+      {
+        where: { id },
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          email: true,
+          deleted: true
+        }
+      }
+    )
 
     if (!user) {
       throw new UnauthorizedException()
