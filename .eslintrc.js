@@ -41,6 +41,7 @@ module.exports = {
     '@stylistic/dot-location': ['error', 'property'],
     '@stylistic/space-in-parens': ['error', 'never'],
     '@stylistic/keyword-spacing': 'error',
-    '@stylistic/space-before-blocks': 'error'
+    '@stylistic/space-before-blocks': 'error',
+    '@stylistic/type-annotation-spacing': 'error'
   }
 }
