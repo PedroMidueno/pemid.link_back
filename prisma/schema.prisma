@@ -18,5 +18,21 @@ model Users {
   modifiedAt  DateTime  @map("modified_at") @default(now()) @db.Timestamp(6)
   deletedAt   DateTime? @map("deleted_at") @db.Timestamp(6)
 
+  urls        Urls[]    @relation("urls_created_by_id")
+
   @@map("users")
+}
+
+model Urls {
+  id          Int       @id @default(autoincrement())
+  longUrl     String    @map("long_url")
+  shortCode   String    @map("short_code") @unique
+  createdAt   DateTime  @map("created_at") @default(now()) @db.Timestamp(6)
+  deleted     Boolean   @default(false)
+  createdById Int?      @map("created_by_id")   
+
+  createdBy   Users?    @relation("urls_created_by_id", fields: [createdById], references: [id])
+
+  @@index([shortCode])
+  @@map("urls")
 }
