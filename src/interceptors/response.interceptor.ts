@@ -4,6 +4,8 @@ import { map } from 'rxjs/operators'
 
 interface Response<T> {
   data: T
+  statusCode: string
+  success: boolean
 }
 
 @Injectable()
