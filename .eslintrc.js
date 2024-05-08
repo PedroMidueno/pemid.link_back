@@ -38,6 +38,9 @@ module.exports = {
     '@stylistic/max-len': ['error', { code: 120 }],
     '@stylistic/key-spacing': 'error',
     '@stylistic/space-infix-ops': 'error',
-    '@stylistic/dot-location': ['error', 'property']
+    '@stylistic/dot-location': ['error', 'property'],
+    '@stylistic/space-in-parens': ['error', 'never'],
+    '@stylistic/keyword-spacing': 'error',
+    '@stylistic/space-before-blocks': 'error'
   }
 }
