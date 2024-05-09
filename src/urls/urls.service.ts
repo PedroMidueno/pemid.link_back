@@ -29,9 +29,8 @@ export class UrlsService {
   }
 
   async deleteUrl(id: number) {
-    // TODO
-    await Promise.resolve()
-
-    return id
+    await this.prisma.urls.delete({
+      where: { id }
+    })
   }
 }
