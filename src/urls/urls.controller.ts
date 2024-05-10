@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, UseGuards } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UseGuards } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 
 import { UrlsService } from './urls.service'
@@ -26,15 +26,21 @@ export class UrlsController {
     return this.urlsService.customShortenUrl(shortenUrlDto, userId)
   }
 
-  @Get('search-custom-code/:code')
+  @Get('custom-code-exists/:code')
   @UseGuards(AuthGuard())
   searchCustomCode(@Param('code') customCode: string) {
-    return this.urlsService.searchCustomCode(customCode)
+    return this.urlsService.shortCodeExistsInDB(customCode)
+  }
+
+  @Put('disable/:id')
+  @UseGuards(AuthGuard())
+  disableUrl(@Param('id', ParseIntPipe) urlId: number) {
+    return this.urlsService.deleteOrDisableUrl(urlId)
   }
 
   @Delete('delete/:id')
   @UseGuards(AuthGuard())
   deleteShortUrl(@Param('id', ParseIntPipe) id: number) {
-    return this.urlsService.deleteUrl(id)
+    return this.urlsService.deleteOrDisableUrl(id, false)
   }
 }
