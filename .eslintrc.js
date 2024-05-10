@@ -42,6 +42,7 @@ module.exports = {
     '@stylistic/space-in-parens': ['error', 'never'],
     '@stylistic/keyword-spacing': 'error',
     '@stylistic/space-before-blocks': 'error',
-    '@stylistic/type-annotation-spacing': 'error'
+    '@stylistic/type-annotation-spacing': 'error',
+    '@stylistic/no-multi-spaces': 'error'
   }
 }
