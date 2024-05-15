@@ -1,7 +1,7 @@
 import { Body, Param, Controller, ParseIntPipe, Patch, Delete, Post, Get, UseGuards } from '@nestjs/common'
 
 import { AdminService } from './admin.service'
-import { CreateUserDto, UpdateUserDto } from './dto'
+import { CreateUserDto, UpdateUserDto, UpdatePasswordDto } from './dto'
 import { AuthGuard } from '@nestjs/passport'
 import { GetUser } from 'src/common/decorators/get-user.decorator'
 import { User } from 'src/common/types'
@@ -15,6 +15,18 @@ export class AdminController {
   @UseGuards(AuthGuard())
   getUserInformation(@GetUser() user: User) {
     return user
+  }
+
+  @Get('validate-pass/:pass')
+  @UseGuards(AuthGuard())
+  validatePassword(@Param('pass') password: string, @GetUser('id') userId: number) {
+    return this.adminService.validatePasswordToUpdate(password, userId)
+  }
+
+  @Patch('change-password')
+  @UseGuards(AuthGuard())
+  changePassword(@Body() updatePasswordDto: UpdatePasswordDto, @GetUser('id') userId: number) {
+    return this.adminService.changeUserPassword(updatePasswordDto, userId)
   }
 
   @Post('create-user')
