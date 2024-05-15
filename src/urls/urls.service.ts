@@ -7,6 +7,22 @@ import { createRandomString } from './helpers/create-random-string.helper'
 export class UrlsService {
   constructor(private readonly prisma: PrismaService) { }
 
+  async getOriginalUrl(shortCode: string) {
+    const longUrl = await this.prisma.urls.findUnique({
+      where: {
+        shortCode
+      },
+      select: {
+        longUrl: true
+      }
+    })
+
+    if (!longUrl)
+      throw new NotFoundException('There is not any url related to this code')
+
+    return longUrl
+  }
+
   async publicShortenUrl(shortenUrlDto: ShortenUrlDto) {
     const { longUrl } = shortenUrlDto
 

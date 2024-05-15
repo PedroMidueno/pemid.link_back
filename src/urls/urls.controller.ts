@@ -9,6 +9,11 @@ import { GetUser } from 'src/common/decorators/get-user.decorator'
 export class UrlsController {
   constructor(private readonly urlsService: UrlsService) {}
 
+  @Get('/:shortCode')
+  getOriginalUrl(@Param('shortCode') shortCode: string) {
+    return this.urlsService.getOriginalUrl(shortCode)
+  }
+
   @Post('shorten-public')
   shortenUrlPublic(@Body() shortenUrlDto: ShortenUrlDto) {
     return this.urlsService.publicShortenUrl(shortenUrlDto)
