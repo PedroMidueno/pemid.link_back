@@ -11,7 +11,7 @@ model Users {
   id          Int       @id @default(autoincrement())
   firstName   String    @map("first_name") @db.VarChar(50)
   lastName    String    @map("last_name")  @db.VarChar(50)
-  email       String  
+  email       String    @unique
   password    String
   deleted     Boolean   @map("deleted") @default(false)
   createdAt   DateTime  @map("created_at") @default(now()) @db.Timestamp(6)
