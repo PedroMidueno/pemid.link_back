@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common'
 
 import * as bcrypt from 'bcrypt'
 
@@ -44,12 +44,19 @@ export class AdminService {
   async createUser(createUserDto: CreateUserDto) {
     const { password, ...userData } = createUserDto
 
-    await this.prisma.users.create({
-      data: {
-        ...userData,
-        password: await bcrypt.hash(password, 10)
-      }
-    })
+    try {
+      await this.prisma.users.create({
+        data: {
+          ...userData,
+          password: await bcrypt.hash(password, 10)
+        }
+      })
+    } catch (error) {
+      if (error?.code === 'P2002')
+        throw new BadRequestException('there is already an account with this email')
+
+      throw new InternalServerErrorException(error.message)
+    }
   }
 
   async updateUser(id: number, updateUserDto: UpdateUserDto) {
