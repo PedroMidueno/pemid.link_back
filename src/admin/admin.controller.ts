@@ -31,16 +31,16 @@ export class AdminController {
 
   @Post('create-user')
   createUser(@Body() createuserDto: CreateUserDto) {
-    this.adminService.createUser(createuserDto)
+    return this.adminService.createUser(createuserDto)
   }
 
   @Patch('update-user/:id')
   updateUser(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto) {
-    this.adminService.updateUser(id, updateUserDto)
+    return this.adminService.updateUser(id, updateUserDto)
   }
 
   @Delete('delete-user/:id')
   deleteUser(@Param('id', ParseIntPipe) id: number) {
-    this.adminService.deleteUser(id)
+    return this.adminService.deleteUser(id)
   }
 }
