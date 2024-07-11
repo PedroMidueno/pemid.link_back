@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, UseGuards } from '@nestjs/common'
+import { Controller, Post, Body, Get, UseGuards, Req } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 
 import { AuthService } from './auth.service'
@@ -15,9 +15,19 @@ export class AuthController {
     return this.authService.login(loginDto)
   }
 
+  @Get('google-login')
+  @UseGuards(AuthGuard('google'))
+  loginWithGoogle() { }
+
+  @Get('google-callback')
+  @UseGuards(AuthGuard('google'))
+  googleCallback(@Req() req: any) {
+    return req.user
+  }
+
   // Route for test auth endpoints
   @Get('test')
-  @UseGuards(AuthGuard())
+  @UseGuards(AuthGuard('jwt'))
   test(@GetUser() user: User) {
     return { user }
   }
