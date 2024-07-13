@@ -8,30 +8,30 @@ datasource db {
 }
 
 model Users {
-  id          Int       @id @default(autoincrement())
-  firstName   String    @map("first_name") @db.VarChar(50)
-  lastName    String    @map("last_name")  @db.VarChar(50)
-  email       String    @unique
-  password    String
-  deleted     Boolean   @map("deleted") @default(false)
-  createdAt   DateTime  @map("created_at") @default(now()) @db.Timestamp(6)
-  modifiedAt  DateTime  @map("modified_at") @default(now()) @db.Timestamp(6)
-  deletedAt   DateTime? @map("deleted_at") @db.Timestamp(6)
+  id           Int           @id @default(autoincrement())
+  firstName    String        @map("first_name") @db.VarChar(50)
+  lastName     String        @map("last_name") @db.VarChar(50)
+  email        String        @unique
+  password     String?
+  deleted      Boolean       @default(false) @map("deleted")
+  createdAt    DateTime      @default(now()) @map("created_at") @db.Timestamp(6)
+  modifiedAt   DateTime      @default(now()) @map("modified_at") @db.Timestamp(6)
+  deletedAt    DateTime?     @map("deleted_at") @db.Timestamp(6)
 
-  urls        Urls[]    @relation("urls_created_by_id")
+  urls Urls[] @relation("urls_created_by_id")
 
   @@map("users")
 }
 
 model Urls {
-  id          Int       @id @default(autoincrement())
-  longUrl     String    @map("long_url")
-  shortCode   String    @map("short_code") @unique
-  createdAt   DateTime  @map("created_at") @default(now()) @db.Timestamp(6)
-  deleted     Boolean   @default(false)
-  createdById Int?      @map("created_by_id")   
+  id          Int      @id @default(autoincrement())
+  longUrl     String   @map("long_url")
+  shortCode   String   @unique @map("short_code")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+  deleted     Boolean  @default(false)
+  createdById Int?     @map("created_by_id")
 
-  createdBy   Users?    @relation("urls_created_by_id", fields: [createdById], references: [id])
+  createdBy Users? @relation("urls_created_by_id", fields: [createdById], references: [id])
 
   @@index([shortCode])
   @@map("urls")
