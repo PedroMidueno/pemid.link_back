@@ -5,10 +5,14 @@ import { AuthService } from './auth.service'
 import { LoginDto } from './dto/login.dto'
 import { GetUser } from 'src/common/decorators/get-user.decorator'
 import { User } from 'src/common/types'
+import { AdminService } from 'src/admin/admin.service'
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) { }
+  constructor(
+    private readonly authService: AuthService,
+    private readonly adminService: AdminService
+  ) { }
 
   @Post('login')
   login(@Body() loginDto: LoginDto) {
