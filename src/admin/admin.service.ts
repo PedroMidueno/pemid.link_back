@@ -48,7 +48,7 @@ export class AdminService {
       await this.prisma.users.create({
         data: {
           ...userData,
-          password: await bcrypt.hash(password, 10)
+          password: password ? await bcrypt.hash(password, 10) : undefined
         }
       })
     } catch (error) {
