@@ -1,7 +1,5 @@
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common'
-
 import * as bcrypt from 'bcrypt'
-
 import { UpdateUserDto, CreateUserDto, UpdatePasswordDto } from './dto'
 import { PrismaService } from 'src/common/prisma.service'
 
@@ -41,14 +39,34 @@ export class AdminService {
     })
   }
 
+  async getOrCreateUser(email: string, firstName: string, lastName: string) {
+    let user: { id: number, firstName: string, lastName: string, email: string }
+
+    user = await this.prisma.users.findUnique({
+      where: { email }
+    })
+
+    if (!user) {
+      user = await this.createUser({ email, firstName, lastName })
+    }
+
+    return user
+  }
+
   async createUser(createUserDto: CreateUserDto) {
     const { password, ...userData } = createUserDto
 
     try {
-      await this.prisma.users.create({
+      return await this.prisma.users.create({
         data: {
           ...userData,
           password: password ? await bcrypt.hash(password, 10) : undefined
+        },
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          email: true
         }
       })
     } catch (error) {
