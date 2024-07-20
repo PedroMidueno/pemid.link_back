@@ -20,5 +20,5 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
   @MinLength(1)
-  readonly password: string
+  readonly password?: string
 }
