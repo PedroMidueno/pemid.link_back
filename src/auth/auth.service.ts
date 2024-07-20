@@ -1,18 +1,18 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-
 import * as bcrypt from 'bcrypt'
-
 import { LoginDto } from './dto/login.dto'
 import { PrismaService } from 'src/common/prisma.service'
 import { JwtPayload } from './interfaces/JwtPayload.interface'
+import { AdminService } from 'src/admin/admin.service'
 
 @Injectable()
 export class AuthService {
 
   constructor(
     private readonly prisma: PrismaService,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtService,
+    private readonly adminService: AdminService
   ) { }
 
   async login(loginDto: LoginDto) {
@@ -34,6 +34,15 @@ export class AuthService {
 
     return {
       email: user.email,
+      token: this.getJwtToken({ id: user.id })
+    }
+  }
+
+  async loginWithGoogle (email: string, firstName: string, lastName: string) {
+    const user = await this.adminService.getOrCreateUser(email, firstName, lastName)
+
+    return {
+      email,
       token: this.getJwtToken({ id: user.id })
     }
   }
