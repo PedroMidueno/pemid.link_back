@@ -1,17 +1,14 @@
 import { Controller, Post, Body, Get, UseGuards, Req } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
-
 import { AuthService } from './auth.service'
 import { LoginDto } from './dto/login.dto'
 import { GetUser } from 'src/common/decorators/get-user.decorator'
 import { User } from 'src/common/types'
-import { AdminService } from 'src/admin/admin.service'
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly adminService: AdminService
   ) { }
 
   @Post('login')
@@ -25,8 +22,11 @@ export class AuthController {
 
   @Get('google-callback')
   @UseGuards(AuthGuard('google'))
-  googleCallback(@Req() req: any) {
-    return req.user
+  /* eslint-disable-next-line */
+  async googleCallback(@Req() req: any) {
+    const user = await this.authService.loginWithGoogle(req.user.email, req.user.firstName, req.user.lastName)
+
+    return user
   }
 
   // Route for test auth endpoints
