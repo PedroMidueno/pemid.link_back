@@ -1,5 +1,4 @@
-import { Body, Param, Controller, ParseIntPipe, Patch, Delete, Post, Get, UseGuards } from '@nestjs/common'
-
+import { Body, Param, Controller, Patch, Delete, Post, Get, UseGuards } from '@nestjs/common'
 import { AdminService } from './admin.service'
 import { CreateUserDto, UpdateUserDto, UpdatePasswordDto } from './dto'
 import { AuthGuard } from '@nestjs/passport'
