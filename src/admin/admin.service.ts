@@ -71,7 +71,9 @@ export class AdminService {
       })
     } catch (error) {
       if (error?.code === 'P2002')
-        throw new BadRequestException('there is already an account with this email')
+        throw new BadRequestException('there is already an account with this email', {
+          cause: 'Ya existe una cuenta con este correo'
+        })
 
       throw new InternalServerErrorException(error.message)
     }

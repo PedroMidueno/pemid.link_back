@@ -27,10 +27,14 @@ export class AuthService {
       }
     })
 
-    if (!user) throw new NotFoundException('User not found')
+    if (!user) throw new NotFoundException('User not found', {
+      cause: 'Usuario o contraseña incorrectos'
+    })
 
     if (!bcrypt.compareSync(password, user.password))
-      throw new UnauthorizedException('Invalid credentials')
+      throw new UnauthorizedException('Invalid credentials', {
+        cause: 'Usuario o contraseña incorrectos'
+      })
 
     return {
       email: user.email,
