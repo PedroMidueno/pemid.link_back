@@ -30,7 +30,8 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
               success: false,
               statusCode,
               data: null,
-              message: typeof errorResponse === 'object' ? errorResponse.message : error.message
+              message: typeof errorResponse === 'object' ? errorResponse.message : error.message,
+              esMessage: error.cause || null
             })
           } else if ('statusCode' in error || 'status' in error && 'message' in error) {
             response.status(error?.statusCode || error?.status).json({
