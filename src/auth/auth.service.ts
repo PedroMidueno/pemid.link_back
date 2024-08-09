@@ -46,7 +46,12 @@ export class AuthService {
     const user = await this.adminService.getOrCreateUser(email, firstName, lastName)
 
     return {
-      email,
+      user: {
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName
+      },
       token: this.getJwtToken({ id: user.id })
     }
   }
