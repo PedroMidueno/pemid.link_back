@@ -43,6 +43,8 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       throw new UnauthorizedException('User has been deleted')
     }
 
+    delete user.deleted
+
     return user
   }
 }
