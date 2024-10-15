@@ -1,13 +1,23 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UseGuards } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, UseGuards } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 
 import { UrlsService } from './urls.service'
 import { ShortenUrlDto } from './dto/shorten-url.dto'
 import { GetUser } from 'src/common/decorators/get-user.decorator'
+import { GetUrlsDto } from './dto/get-urls.dto'
 
 @Controller('urls')
 export class UrlsController {
   constructor(private readonly urlsService: UrlsService) {}
+
+  @Get('/user')
+  @UseGuards(AuthGuard())
+  getUrlsByUserId(
+    @GetUser('id') userId: number,
+    @Query() getUrlsDto: GetUrlsDto
+  ) {
+    return this.urlsService.getUrlsByUserId(getUrlsDto, userId)
+  }
 
   @Get('/:shortCode')
   getOriginalUrl(@Param('shortCode') shortCode: string) {

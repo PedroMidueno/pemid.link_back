@@ -2,10 +2,38 @@ import { ShortenUrlDto } from './dto/shorten-url.dto'
 import { PrismaService } from './../common/prisma.service'
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common'
 import { createRandomString } from './helpers/create-random-string.helper'
+import { GetUrlsDto } from './dto/get-urls.dto'
+import { parseQueryParameters } from 'src/common/helpers'
+import { PaginationDto } from 'src/common/dto/pagination.dto'
 
 @Injectable()
 export class UrlsService {
   constructor(private readonly prisma: PrismaService) { }
+
+  async getUrlsByUserId(getUrlsDto: GetUrlsDto, userId: number) {
+    const { findBy, skip, take } = parseQueryParameters(getUrlsDto as PaginationDto, ['longUrl', 'shortCode'])
+    const urls = await this.prisma.urls.findMany({
+      where: {
+        createdById: userId,
+        OR: findBy
+      },
+      skip,
+      take
+    })
+
+    const count = await this.prisma.urls.count({
+      where: {
+        createdById: userId,
+        OR: findBy
+      }
+    })
+
+
+    return {
+      count,
+      urls
+    }
+  }
 
   async getOriginalUrl(shortCode: string) {
     const longUrl = await this.prisma.urls.findUnique({
@@ -119,7 +147,7 @@ export class UrlsService {
       if (disableOnly) {
         await this.prisma.urls.update({
           where: { id },
-          data: { deleted: true }
+          data: { enabled: false }
         })
       } else {
         await this.prisma.urls.delete({
