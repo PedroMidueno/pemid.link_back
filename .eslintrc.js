@@ -43,6 +43,7 @@ module.exports = {
     '@stylistic/keyword-spacing': 'error',
     '@stylistic/space-before-blocks': 'error',
     '@stylistic/type-annotation-spacing': 'error',
-    '@stylistic/no-multi-spaces': 'error'
+    '@stylistic/no-multi-spaces': 'error',
+    '@stylistic/indent': ['off']
   }
 }
