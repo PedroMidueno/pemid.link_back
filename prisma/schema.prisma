@@ -28,7 +28,7 @@ model Urls {
   longUrl     String   @map("long_url")
   shortCode   String   @unique @map("short_code")
   createdAt   DateTime @default(now()) @map("created_at") @db.Timestamp(6)
-  deleted     Boolean  @default(false)
+  enabled     Boolean  @default(true)
   createdById Int?     @map("created_by_id")
 
   createdBy Users? @relation("urls_created_by_id", fields: [createdById], references: [id])
