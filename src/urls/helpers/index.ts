@@ -9,3 +9,10 @@ export const createRandomString = (length: number): string => {
 
   return result
 }
+
+export const parseValidUrl = (url: string) => {
+  const hasHTTP = url.indexOf('http') === 0
+
+  if (!hasHTTP) return 'http://' + url
+  return url
+}
