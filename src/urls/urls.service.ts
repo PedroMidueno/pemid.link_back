@@ -18,7 +18,10 @@ export class UrlsService {
         OR: findBy
       },
       skip,
-      take
+      take,
+      orderBy: {
+        createdAt: 'desc'
+      }
     })
 
     const count = await this.prisma.urls.count({
@@ -168,7 +171,7 @@ export class UrlsService {
     })
 
     return {
-      exists: shortCodeInDb ? true : false
+      exists: !!shortCodeInDb
     }
   }
 
