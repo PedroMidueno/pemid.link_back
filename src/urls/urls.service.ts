@@ -1,7 +1,7 @@
 import { ShortenUrlDto } from './dto/shorten-url.dto'
 import { PrismaService } from './../common/prisma.service'
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common'
-import { createRandomString } from './helpers/create-random-string.helper'
+import { createRandomString, parseValidUrl } from './helpers'
 import { GetUrlsDto } from './dto/get-urls.dto'
 import { parseQueryParameters } from 'src/common/helpers'
 import { PaginationDto } from 'src/common/dto/pagination.dto'
@@ -69,7 +69,7 @@ export class UrlsService {
       // create url record in db
       shortUrl = await this.prisma.urls.create({
         data: {
-          longUrl,
+          longUrl: parseValidUrl(longUrl),
           shortCode
         },
         select: {
@@ -95,7 +95,7 @@ export class UrlsService {
 
     const shortUrl = await this.prisma.urls.create({
       data: {
-        longUrl,
+        longUrl: parseValidUrl(longUrl),
         shortCode,
         createdBy: { connect: { id: userId } }
       },
@@ -124,8 +124,8 @@ export class UrlsService {
 
     const shortUrl = await this.prisma.urls.create({
       data: {
-        longUrl,
-        shortCode: customCode,
+        longUrl: parseValidUrl(longUrl),
+        shortCode: customCode.replaceAll(' ', '-'),
         createdBy: { connect: { id: userId } }
       },
       select: {
