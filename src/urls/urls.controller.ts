@@ -47,7 +47,7 @@ export class UrlsController {
     return this.urlsService.shortCodeExistsInDB(customCode.replaceAll(' ', '-'))
   }
 
-  @Put('disable/:id')
+  @Put('change-status/:id')
   @UseGuards(AuthGuard())
   changeEnableState(@Param('id', ParseIntPipe) urlId: number) {
     return this.urlsService.changeEnableState(urlId)
