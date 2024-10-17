@@ -44,7 +44,7 @@ export class UrlsController {
   @Get('custom-code-exists/:code')
   @UseGuards(AuthGuard())
   searchCustomCode(@Param('code') customCode: string) {
-    return this.urlsService.shortCodeExistsInDB(customCode)
+    return this.urlsService.shortCodeExistsInDB(customCode.replaceAll(' ', '-'))
   }
 
   @Put('disable/:id')
