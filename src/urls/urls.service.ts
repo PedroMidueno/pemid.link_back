@@ -140,26 +140,36 @@ export class UrlsService {
     }
   }
 
-  async deleteOrDisableUrl(id: number, disableOnly: boolean = true) {
-    const urlInDB = await this.prisma.urls.findFirst({
+  async disableUrl (id: number) {
+    const urlInDB = await this.prisma.urls.findUnique({
       where: { id }
     })
 
     if (urlInDB) {
-
-      if (disableOnly) {
-        await this.prisma.urls.update({
-          where: { id },
-          data: { enabled: false }
-        })
-      } else {
-        await this.prisma.urls.delete({
-          where: { id }
-        })
-      }
-
+      await this.prisma.urls.update({
+        where: { id },
+        data: { enabled: false }
+      })
     } else {
-      throw new NotFoundException('url with provided id does not exists')
+      throw new NotFoundException('url with provided id does not exists', {
+        cause: 'No se encontró la url'
+      })
+    }
+  }
+
+  async deleteUrl(id: number) {
+    const urlInDB = await this.prisma.urls.findUnique({
+      where: { id }
+    })
+
+    if (urlInDB) {
+      await this.prisma.urls.delete({
+        where: { id }
+      })
+    } else {
+      throw new NotFoundException('url with provided id does not exists', {
+        cause: 'No se encontró la url'
+      })
     }
   }
 

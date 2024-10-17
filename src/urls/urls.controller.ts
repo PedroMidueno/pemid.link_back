@@ -50,12 +50,12 @@ export class UrlsController {
   @Put('disable/:id')
   @UseGuards(AuthGuard())
   disableUrl(@Param('id', ParseIntPipe) urlId: number) {
-    return this.urlsService.deleteOrDisableUrl(urlId)
+    return this.urlsService.disableUrl(urlId)
   }
 
   @Delete('delete/:id')
   @UseGuards(AuthGuard())
   deleteShortUrl(@Param('id', ParseIntPipe) id: number) {
-    return this.urlsService.deleteOrDisableUrl(id, false)
+    return this.urlsService.deleteUrl(id)
   }
 }
