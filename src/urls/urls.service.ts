@@ -140,15 +140,15 @@ export class UrlsService {
     }
   }
 
-  async disableUrl (id: number) {
+  async changeEnableState (id: number) {
     const urlInDB = await this.prisma.urls.findUnique({
       where: { id }
     })
 
     if (urlInDB) {
-      await this.prisma.urls.update({
+      return await this.prisma.urls.update({
         where: { id },
-        data: { enabled: false }
+        data: { enabled: !urlInDB.enabled }
       })
     } else {
       throw new NotFoundException('url with provided id does not exists', {

@@ -49,8 +49,8 @@ export class UrlsController {
 
   @Put('disable/:id')
   @UseGuards(AuthGuard())
-  disableUrl(@Param('id', ParseIntPipe) urlId: number) {
-    return this.urlsService.disableUrl(urlId)
+  changeEnableState(@Param('id', ParseIntPipe) urlId: number) {
+    return this.urlsService.changeEnableState(urlId)
   }
 
   @Delete('delete/:id')
