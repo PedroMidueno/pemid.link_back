@@ -41,7 +41,8 @@ export class UrlsService {
   async getOriginalUrl(shortCode: string) {
     const longUrl = await this.prisma.urls.findUnique({
       where: {
-        shortCode
+        shortCode,
+        enabled: true
       },
       select: {
         longUrl: true
