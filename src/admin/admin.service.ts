@@ -40,7 +40,7 @@ export class AdminService {
   }
 
   async getOrCreateUser(email: string, firstName: string, lastName: string) {
-    let user: { id: number, firstName: string, lastName: string, email: string }
+    let user: { id: number, firstName: string, lastName: string, email: string, createdAt?: Date }
 
     user = await this.prisma.users.findUnique({
       where: { email }

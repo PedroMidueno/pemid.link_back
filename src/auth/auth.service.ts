@@ -50,7 +50,8 @@ export class AuthService {
         id: user.id,
         email: user.email,
         firstName: user.firstName,
-        lastName: user.lastName
+        lastName: user.lastName,
+        createdAt: user.createdAt
       },
       token: this.getJwtToken({ id: user.id })
     }
