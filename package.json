@@ -1,10 +1,11 @@
 {
-  "name": "pemid_link",
-  "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "name": "pemid.link_server",
+  "version": "1.0.0",
+  "author": {
+    "name": "Pedro Midueño"
+  },
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "build": "npm run migrate:deploy && nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
