@@ -1,4 +1,4 @@
-import { Body, Param, Controller, Patch, Delete, Post, Get, UseGuards } from '@nestjs/common'
+import { Body, Controller, Patch, Delete, Post, Get, UseGuards } from '@nestjs/common'
 import { AdminService } from './admin.service'
 import { CreateUserDto, UpdateUserDto, UpdatePasswordDto } from './dto'
 import { AuthGuard } from '@nestjs/passport'
@@ -16,9 +16,9 @@ export class AdminController {
     return user
   }
 
-  @Get('validate-pass/:pass')
+  @Post('validate-pass')
   @UseGuards(AuthGuard('jwt'))
-  validatePassword(@Param('pass') password: string, @GetUser('id') userId: number) {
+  validatePassword(@Body('pass') password: string, @GetUser('id') userId: number) {
     return this.adminService.validatePasswordToUpdate(password, userId)
   }
 
