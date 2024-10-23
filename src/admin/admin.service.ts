@@ -15,6 +15,8 @@ export class AdminService {
       }
     })
 
+    if (!passwordInDb.password) return { equals: true }
+
     const equals = bcrypt.compareSync(password, passwordInDb.password)
 
     return {
@@ -24,10 +26,17 @@ export class AdminService {
 
   async changeUserPassword(updatePasswordDto: UpdatePasswordDto, userId: number) {
     const { oldPassword, newPassword } = updatePasswordDto
-    const { equals } = await this.validatePasswordToUpdate(oldPassword, userId)
 
-    if (!equals)
-      throw new BadRequestException('given password does not match with current password')
+    const user = await this.prisma.users.findUnique({ where: { id: userId } })
+
+    if (user.password) {
+      const equals = bcrypt.compareSync(oldPassword, user.password)
+
+      if (!equals)
+        throw new BadRequestException('given password does not match with current password', {
+          cause: 'La contraseña no coincide con la actual'
+        })
+    }
 
     await this.prisma.users.update({
       where: {
@@ -40,7 +49,7 @@ export class AdminService {
   }
 
   async getOrCreateUser(email: string, firstName: string, lastName: string) {
-    let user: { id: number, firstName: string, lastName: string, email: string, createdAt?: Date }
+    let user: { id: number, firstName: string, lastName: string, email: string, createdAt?: Date, password?: string }
 
     user = await this.prisma.users.findUnique({
       where: { email }
