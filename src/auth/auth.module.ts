@@ -8,6 +8,7 @@ import { JwtStrategy } from './strategies/jwt.strategy'
 import { ConfigModule } from '@nestjs/config'
 import { GoogleStrategy } from './strategies/google.strategy'
 import { AdminService } from 'src/admin/admin.service'
+import { GithubStrategy } from './strategies/github.strategy'
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { AdminService } from 'src/admin/admin.service'
     CommonModule
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, GoogleStrategy, AdminService],
+  providers: [AuthService, JwtStrategy, GoogleStrategy, GithubStrategy, AdminService],
   exports: [PassportModule, JwtModule, JwtStrategy]
 })
 export class AuthModule {}
