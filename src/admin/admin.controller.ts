@@ -1,46 +1,33 @@
 import { Body, Controller, Patch, Delete, Post, Get, UseGuards } from '@nestjs/common'
 import { AdminService } from './admin.service'
-import { CreateUserDto, UpdateUserDto, UpdatePasswordDto } from './dto'
-import { AuthGuard } from '@nestjs/passport'
+import { CreateUserDto, UpdateUserDto } from './dto'
 import { GetUser } from 'src/common/decorators/get-user.decorator'
 import { User } from 'src/common/types'
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
 
 @Controller('admin')
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
-
-  @Get('get-user-info')
-  @UseGuards(AuthGuard('jwt'))
+  @Get('user')
+  @UseGuards(JwtAuthGuard)
   getUserInformation(@GetUser() user: User) {
     return user
   }
 
-  @Post('validate-pass')
-  @UseGuards(AuthGuard('jwt'))
-  validatePassword(@Body('pass') password: string, @GetUser('id') userId: number) {
-    return this.adminService.validatePasswordToUpdate(password, userId)
-  }
-
-  @Patch('change-password')
-  @UseGuards(AuthGuard('jwt'))
-  changePassword(@Body() updatePasswordDto: UpdatePasswordDto, @GetUser('id') userId: number) {
-    return this.adminService.changeUserPassword(updatePasswordDto, userId)
-  }
-
-  @Post('create-user')
+  @Post('user')
   createUser(@Body() createuserDto: CreateUserDto) {
     return this.adminService.createUser(createuserDto)
   }
 
-  @Patch('update-user')
-  @UseGuards(AuthGuard('jwt'))
+  @Patch('user')
+  @UseGuards(JwtAuthGuard)
   updateUser(@GetUser('id') userId: number, @Body() updateUserDto: UpdateUserDto) {
     return this.adminService.updateUser(userId, updateUserDto)
   }
 
-  @Delete('delete-user')
-  @UseGuards(AuthGuard('jwt'))
+  @Delete('user')
+  @UseGuards(JwtAuthGuard)
   deleteUser(@GetUser('id') userId: number) {
     return this.adminService.deleteUser(userId)
   }
