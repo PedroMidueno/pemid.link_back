@@ -11,11 +11,11 @@ export class AuthController {
     private readonly configService: ConfigService
   ) { }
 
-  @Get('google-login')
+  @Get('google')
   @UseGuards(GoogleAuthGuard)
   loginWithGoogle() { }
 
-  @Get('google-callback')
+  @Get('google/callback')
   @UseGuards(GoogleAuthGuard)
   async googleCallback(@Req() req: any, @Res() res: any) {
     const user = await this.authService.loginWithSocialProvider(req.user.email, req.user.firstName, req.user.lastName)
