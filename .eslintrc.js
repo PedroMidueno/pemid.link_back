@@ -12,12 +12,12 @@ module.exports = {
     node: true,
     jest: true
   },
-  ignorePatterns: ['.eslintrc.js', 'postgres'],
+  ignorePatterns: ['.eslintrc.js', 'postgres', 'dist'],
   rules: {
     'prettier/prettier': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/no-explicit-any': 'warn',
+    '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-unused-vars': 'warn',
     'require-await': 'error',
     '@stylistic/eol-last': 'error',
@@ -33,7 +33,6 @@ module.exports = {
     '@stylistic/array-bracket-spacing': ['error', 'never'],
     '@stylistic/block-spacing': 'error',
     '@stylistic/object-curly-spacing': ['error', 'always', { arraysInObjects: true, objectsInObjects: true }],
-    '@stylistic/indent': ['error', 2],
     '@stylistic/array-bracket-newline': ['error', 'consistent'],
     '@stylistic/max-len': ['error', { code: 120 }],
     '@stylistic/key-spacing': 'error',
@@ -44,6 +43,12 @@ module.exports = {
     '@stylistic/space-before-blocks': 'error',
     '@stylistic/type-annotation-spacing': 'error',
     '@stylistic/no-multi-spaces': 'error',
-    '@stylistic/indent': ['off']
+    '@stylistic/indent': ['warn', 2, {
+      ignoredNodes: [
+        'FunctionExpression > .params[decorators.length > 0]',
+        'FunctionExpression > .params > :matches(Decorator, :not(:first-child))',
+        'ClassBody.body > PropertyDefinition[decorators.length > 0] > .key'
+      ]
+    }]
   }
 }

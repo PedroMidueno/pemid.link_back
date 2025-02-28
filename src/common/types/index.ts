@@ -4,6 +4,5 @@ export interface User {
   lastName: string,
   email: string,
   deleted?: boolean
-  createdAt: Date,
-  password?: string
+  createdAt: Date
 }
