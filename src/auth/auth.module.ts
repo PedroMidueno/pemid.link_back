@@ -9,6 +9,7 @@ import { ConfigModule } from '@nestjs/config'
 import { GoogleStrategy } from './strategies/google.strategy'
 import { AdminService } from 'src/admin/admin.service'
 import { GithubStrategy } from './strategies/github.strategy'
+import { HttpModule } from '@nestjs/axios'
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import { GithubStrategy } from './strategies/github.strategy'
         expiresIn: '3d'
       }
     }),
-    CommonModule
+    CommonModule,
+    HttpModule
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy, GoogleStrategy, GithubStrategy, AdminService],
