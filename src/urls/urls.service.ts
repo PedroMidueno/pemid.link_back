@@ -1,14 +1,19 @@
 import { ShortenUrlDto } from './dto/shorten-url.dto'
 import { PrismaService } from './../common/prisma.service'
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common'
+import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common'
 import { createRandomString, parseValidUrl } from './helpers'
 import { GetUrlsDto } from './dto/get-urls.dto'
 import { parseQueryParameters } from 'src/common/helpers'
 import { PaginationDto } from 'src/common/dto/pagination.dto'
+import { CACHE_MANAGER } from '@nestjs/cache-manager'
+import { Cache } from 'cache-manager'
 
 @Injectable()
 export class UrlsService {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
+    private readonly prisma: PrismaService
+  ) { }
 
   async getUrlsByUserId(getUrlsDto: GetUrlsDto, userId: number) {
     const { findBy, skip, take } = parseQueryParameters(getUrlsDto as PaginationDto, ['longUrl', 'shortCode'])
@@ -39,6 +44,14 @@ export class UrlsService {
   }
 
   async getOriginalUrl(shortCode: string) {
+    const cachedLongUrl = await this.cacheManager.get<string>(shortCode)
+
+    if (cachedLongUrl) {
+      return {
+        longUrl: cachedLongUrl
+      }
+    }
+
     const longUrl = await this.prisma.urls.findUnique({
       where: {
         shortCode,
@@ -49,8 +62,13 @@ export class UrlsService {
       }
     })
 
-    if (!longUrl)
-      throw new NotFoundException('There is not any url related to this code')
+    if (!longUrl) {
+      throw new NotFoundException('There is not any url related to this code', {
+        cause: 'No existe url relacionada a este código'
+      })
+    }
+
+    await this.cacheManager.set(shortCode, longUrl.longUrl)
 
     return longUrl
   }
