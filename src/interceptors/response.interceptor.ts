@@ -20,7 +20,6 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
       .pipe(
         catchError(error => {
           logger.error(error?.name ?? error)
-          console.error(error)
 
           if (error instanceof HttpException) {
             const statusCode = error.getStatus()

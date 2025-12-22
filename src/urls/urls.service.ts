@@ -44,6 +44,7 @@ export class UrlsService {
   }
 
   async getOriginalUrl(shortCode: string) {
+    this.registerClickEvent(shortCode)
     const cachedLongUrl = await this.cacheManager.get<string>(shortCode)
 
     if (cachedLongUrl) {
@@ -159,7 +160,7 @@ export class UrlsService {
     }
   }
 
-  async changeEnableState (id: number) {
+  async changeEnableState(id: number) {
     const urlInDB = await this.prisma.urls.findUnique({
       where: { id }
     })
@@ -221,5 +222,22 @@ export class UrlsService {
 
     if (!exists) return randomString
     else return await this.generateNonExistingRandomString()
+  }
+
+  private async registerClickEvent(shortCode: string) {
+    try {
+      await this.prisma.clickEvent.create({
+        data: {
+          urlShortCode: shortCode
+        }
+      })
+    } catch (error: any) {
+      if (error.code !== 'P2003') { // Error when url does not exist
+        console.error('Error while registering click event', {
+          shortCode,
+          timestamp: Date.now()
+        })
+      }
+    }
   }
 }
