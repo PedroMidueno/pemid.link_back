@@ -32,8 +32,17 @@ model Urls {
   enabled     Boolean  @default(true)
   createdById Int?     @map("created_by_id")
 
-  createdBy Users? @relation("urls_created_by_id", fields: [createdById], references: [id])
+  clickEvents ClickEvent[]
 
   @@index([shortCode])
   @@map("urls")
+}
+
+model ClickEvent {
+  id           Int      @id @default(autoincrement())
+  visitedAt    DateTime @default(now()) @map("visited_at")
+  urlShortCode String   @map("url_short_code")
+  url          Urls     @relation(fields: [urlShortCode], references: [shortCode])
+
+  @@map("click_event")
 }
