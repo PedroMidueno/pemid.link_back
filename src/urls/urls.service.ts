@@ -232,12 +232,10 @@ export class UrlsService {
         }
       })
     } catch (error: any) {
-      if (error.code !== 'P2003') { // Error when url does not exist
-        console.error('Error while registering click event', {
-          shortCode,
-          timestamp: Date.now()
-        })
-      }
+      console.error('Error while registering click event', {
+        shortCode,
+        timestamp: Date.now()
+      })
     }
   }
 }
