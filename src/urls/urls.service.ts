@@ -64,7 +64,7 @@ export class UrlsService {
 
     await this.registerClickEvent(shortCode)
 
-    return longUrl
+    return { longUrl }
   }
 
   async publicShortenUrl(shortenUrlDto: ShortenUrlDto) {
