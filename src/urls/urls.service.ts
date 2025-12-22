@@ -44,32 +44,25 @@ export class UrlsService {
   }
 
   async getOriginalUrl(shortCode: string) {
-    this.registerClickEvent(shortCode)
-    const cachedLongUrl = await this.cacheManager.get<string>(shortCode)
-
-    if (cachedLongUrl) {
-      return {
-        longUrl: cachedLongUrl
-      }
-    }
-
-    const longUrl = await this.prisma.urls.findUnique({
-      where: {
-        shortCode,
-        enabled: true
-      },
-      select: {
-        longUrl: true
-      }
-    })
+    let longUrl = await this.cacheManager.get<string | null>(shortCode)
 
     if (!longUrl) {
-      throw new NotFoundException('There is not any url related to this code', {
-        cause: 'No existe url relacionada a este código'
+      const dbUrl = await this.prisma.urls.findUnique({
+        where: { shortCode, enabled: true },
+        select: { longUrl: true }
       })
+
+      if (!dbUrl) {
+        throw new NotFoundException('There is not any url related to this code', {
+          cause: 'No existe url relacionada a este código'
+        })
+      }
+
+      longUrl = dbUrl.longUrl
+      await this.cacheManager.set(shortCode, longUrl)
     }
 
-    await this.cacheManager.set(shortCode, longUrl.longUrl)
+    await this.registerClickEvent(shortCode)
 
     return longUrl
   }
