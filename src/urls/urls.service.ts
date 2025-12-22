@@ -238,4 +238,10 @@ export class UrlsService {
       })
     }
   }
+
+  async onModuleInit() {
+    console.log('Starting cache clearing...')
+    await this.cacheManager.clear()
+    console.log('Cache cleared successfully!!!')
+  }
 }
