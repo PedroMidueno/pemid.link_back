@@ -3,5 +3,8 @@
   "editor.defaultFormatter": "dbaeumer.vscode-eslint",
   "editor.tabSize": 2,
   "editor.formatOnSave": true,
-  "prisma.pinToPrisma6": true
+  "prisma.pinToPrisma6": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always"
+  }
 }
