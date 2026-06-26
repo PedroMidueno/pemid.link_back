@@ -41,7 +41,7 @@ model ClickEvent {
   id           Int      @id @default(autoincrement())
   visitedAt    DateTime @default(now()) @map("visited_at")
   urlShortCode String   @map("url_short_code")
-  url          Urls     @relation(fields: [urlShortCode], references: [shortCode])
+  url          Urls     @relation(fields: [urlShortCode], references: [shortCode], onDelete: Cascade)
 
   @@map("click_event")
 }
