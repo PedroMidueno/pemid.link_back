@@ -6,5 +6,6 @@
   "prisma.pinToPrisma6": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "always"
-  }
+  },
+  "cSpell.enabled": false
 }

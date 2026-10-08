@@ -1,17 +1,14 @@
 import { ShortenUrlDto } from './dto/shorten-url.dto'
 import { PrismaService } from './../common/prisma.service'
-import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common'
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common'
 import { createRandomString, parseValidUrl } from './helpers'
 import { GetUrlsDto } from './dto/get-urls.dto'
 import { parseQueryParameters } from 'src/common/helpers'
 import { PaginationDto } from 'src/common/dto/pagination.dto'
-import { CACHE_MANAGER } from '@nestjs/cache-manager'
-import { Cache } from 'cache-manager'
 
 @Injectable()
 export class UrlsService {
   constructor(
-    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
     private readonly prisma: PrismaService
   ) { }
 
@@ -44,27 +41,20 @@ export class UrlsService {
   }
 
   async getOriginalUrl(shortCode: string) {
-    let longUrl = await this.cacheManager.get<string | null>(shortCode)
+    const dbUrl = await this.prisma.urls.findUnique({
+      where: { shortCode, enabled: true },
+      select: { longUrl: true }
+    })
 
-    if (!longUrl) {
-      const dbUrl = await this.prisma.urls.findUnique({
-        where: { shortCode, enabled: true },
-        select: { longUrl: true }
+    if (!dbUrl) {
+      throw new NotFoundException('There is not any url related to this code', {
+        cause: 'No existe url relacionada a este código'
       })
-
-      if (!dbUrl) {
-        throw new NotFoundException('There is not any url related to this code', {
-          cause: 'No existe url relacionada a este código'
-        })
-      }
-
-      longUrl = dbUrl.longUrl
-      await this.cacheManager.set(shortCode, longUrl)
     }
 
     await this.registerClickEvent(shortCode)
 
-    return { longUrl }
+    return { longUrl: dbUrl.longUrl }
   }
 
   async publicShortenUrl(shortenUrlDto: ShortenUrlDto) {
@@ -230,11 +220,5 @@ export class UrlsService {
         timestamp: Date.now()
       })
     }
-  }
-
-  async onModuleInit() {
-    console.log('Starting cache clearing...')
-    await this.cacheManager.clear()
-    console.log('Cache cleared successfully!!!')
   }
 }
