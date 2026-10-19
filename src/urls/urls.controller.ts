@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, UseGuards } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Header, Param, ParseIntPipe, Post, Put, Query, UseGuards } from '@nestjs/common'
 import { UrlsService } from './urls.service'
 import { ShortenUrlDto } from './dto/shorten-url.dto'
 import { GetUser } from 'src/common/decorators/get-user.decorator'
@@ -19,6 +19,9 @@ export class UrlsController {
   }
 
   @Get(':shortCode')
+  @Header('Cache-Control', 'no-store, no-cache')
+  @Header('Pragma', 'no-cache')
+  @Header('Expires', '0')
   getOriginalUrl(@Param('shortCode') shortCode: string) {
     return this.urlsService.getOriginalUrl(shortCode)
   }
